@@ -58,3 +58,23 @@ You can now launch the VM by exposing the trustee IP (for example, using the IP 
 export TRUSTEE_ADDR=192.168.122.1
 scripts/install_vm.sh -k coreos.key.pub -b configs/ak.bu -i $(pwd)/coreos/fcos-qemu.x86_64.qcow2 -n <VM_NAME>
 ```
+
+## Start fcos CVM in Azure
+Note the az command line tool is needed for this script to work
+properly. More information under the [ms docs](
+https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
+```bash
+scripts/boot-azure-fcos.sh -k "$(cat coreos.key.pub)"
+```
+
+## Remove fcos CVM in Azure
+This step will depend on the value of `az_id` that was set in the script
+mentioned above. All the resources were created under the same resource
+group. The only thing you need to do to undo all of that is removing the
+resource group, which will be `"${az_id}-group"`; `aztestvm-group` by
+default.
+
+So just:
+```bash
+az group delete -n ${az_id}-group
+```
